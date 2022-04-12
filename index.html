@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<body>
+  <link rel="stylesheet" href="styles.css">
+</body>
+<h1 class="GameName">Dodge-The-Enemy</h1>
+<p class="Tutorial">Click the screen once, then use the W and S keys to move your character up and down. If the enemy touches you, you lose. Good luck! Also if you want, L changes your color. </p>
+<p class="Warning">If the page gets reloaded, your high score will not be kept, so maybe screenshot it before you leave the page. </p>
+<h2 class="HighScore" id="HighScore">High score: </h1>
+<h3 class="Score" id="Score">Last score: </h3>
+<button class="Reset" onclick="ResetGame()">Reset</button>
+<h1 id="Player" class="Player">:D</h1>
+<!-- <h1 id="Enemy">:[</h1> -->
+<!-- <p id="log"></p> -->
+<!-- Leaving las vegas Besnine -->
+
+
+
+
+<script>
+console.log("In case your curios, my personal high score is 49, see if you can beat that. :p");
+const player = document.getElementById("Player");
+//Enemy creation-------------------------------
+var enemy = document.createElement('H1');
+var t = document.createTextNode(":[");
+enemy.appendChild(t);
+document.body.appendChild(enemy);
+var Score = 0;
+var BestScore = 0;
+const GameWaves = 20;//Never really used for anything, just here if somebody wants to set a limit on the game. 
+var DefaultColor = player.style.color;
+
+player.style.float = "left"; //This line and the line below make the player and enemy side by side. 
+enemy.style.float = "left";
+
+const margins = ["0px 0px 0px","100px 0px 0px","200px 0px 0px", "300px 0px 0px", "400px 0px 0px","500px 0px 0px"];
+const colors = ["hsl(0, 100%, 50%)","hsl(10, 100%, 50%)","hsl(20, 100%, 50%)","hsl(30, 100%, 50%)","hsl(40, 100%, 50%)","hsl(50, 100%, 50%)","hsl(60, 100%, 50%)","hsl(70, 100%, 50%)","hsl(80, 100%, 50%)","hsl(90, 100%, 50%)","hsl(100, 100%, 50%)","hsl(110, 100%, 50%)","hsl(120, 100%, 50%)","hsl(130, 100%, 50%)","hsl(140, 100%, 50%)","hsl(150, 100%, 50%)","hsl(160, 100%, 50%)","hsl(170, 100%, 50%)","hsl(180, 100%, 50%)","hsl(190, 100%, 50%)","hsl(200, 100%, 50%)","hsl(210, 100%, 50%)","hsl(220, 100%, 50%)","hsl(230, 100%, 50%)","hsl(240, 100%, 50%)","hsl(250, 100%, 50%)","hsl(260, 100%, 50%)","hsl(270, 100%, 50%)","hsl(280, 100%, 50%)","hsl(290, 100%, 50%)","hsl(300, 100%, 50%)","hsl(310, 100%, 50%)","hsl(320, 100%, 50%)","hsl(330, 100%, 50%)","hsl(340, 100%, 50%)","hsl(350, 100%, 50%)","hsl(359, 100%, 50%)"]
+var ColorIndex = 0;
+// const margins = ["500px 0px 0px","400px 0px 0px","300px 0px 0px", "200px 0px 0px", "100px 0px 0px","0px 0px 0px"];
+enemyCounter = 0;
+var PlayerDead = false;
+const EnemyMargins = [["100px 0px 0px","100px 100px 0px","100px 200px 0px","100px 300px 0px","100px 400px 0px"], ["200px 0px 0px","200px 100px 0px","200px 200px 0px","200px 300px 0px","200px 400px 0px"], ["300px 0px 0px","300px 100px 0px","300px 200px 0px","300px 300px 0px","300px 400px 0px"],["400px 0px 0px","400px 100px 0px","400px 200px 0px","400px 300px 0px","400px 400px 0px"],["500px 0px 0px","500px 100px 0px","500px 200px 0px","500px 300px 0px","500px 400px 0px"]];
+const WaveSpeeds = [1000,800,700,500,500,500,500,500,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,50,50,50,50,50,50,25,12.5,6.25,1,1,1,1,1,1,1,1,1,1,1,1,1];
+var SpeedIndex = 0;
+// const margins100 = ["100px 100px 0px","100px 200px 0px","100px 300px 0px","100px 400px 0px"];
+// const margins200 = ["200px 100px 0px","200px 200px 0px","200px 300px 0px","200px 400px 0px"];
+// const margins300 = ["300px 100px 0px","300px 200px 0px","300px 300px 0px","300px 400px 0px"];
+// const margins400 = ["400px 100px 0px","400px 200px 0px","400px 300px 0px","400px 400px 0px"];
+// const margins500 = ["500px 100px 0px","500px 200px 0px","500px 300px 0px","500px 400px 0px"];
+var random = Math.round(Math.random() * 4);//Distance from top
+var random2 = Math.round(Math.random() * 3);//Distance from player
+random2 = random2 + 1;
+// console.log(random);
+// console.log(random);
+// console.log(random2);
+
+enemy.style.margin = EnemyMargins[random][random2];
+var CoolDown = 1000;
+const log = document.getElementById('log');
+
+var pos = 3;
+player.style.margin = margins[pos];
+
+
+
+
+
+
+
+
+document.addEventListener('keydown', logKey);
+
+function logKey(e) {
+  // log.textContent += ` ${e.code}`;
+  if(e.code == "KeyS"){
+    if(PlayerDead == false){
+      if(pos < margins.length){
+        pos = pos + 1;
+        player.style.margin = margins[pos];
+      }
+    }
+      // console.log("Forward!");
+      
+      
+  }
+
+  if(e.code == "KeyW"){
+    if(PlayerDead == false){
+      if(pos > 1){
+        pos = pos - 1;
+        player.style.margin = margins[pos];
+      }
+    }
+      // console.log("Backward!")   
+  }
+
+  if(e.code == "KeyL"){
+      // console.log("ColorChange!")
+      player.style.color = colors[ColorIndex];
+      ColorIndex = ColorIndex + 1;
+      DefaultColor = player.style.color;
+      if(ColorIndex == colors.length){
+        ColorIndex = 0;
+      }
+  }
+
+  if(e.code == "KeyD"){
+      console.log("Right!")
+      if(pos == 6){pos = 5};
+      console.log(pos-1);
+  }
+
+
+}
+
+var W = random2;
+
+// function KillEnemy(E){
+//   setTimeout(() => {
+//     console.log("Player pos: " + pos);
+//     console.log("Enemy pos: " + random);
+//     enemy.parentNode.removeChild(E);
+//     // CreateEnemy();
+//   }, 3000);
+// }
+
+function ResetEnemy(){
+  random = Math.round(Math.random() * 4);//Distance from top
+  random2 = Math.round(Math.random() * 3);//Distance from player
+  random2 = random2 + 1;
+  enemy.style.margin = EnemyMargins[random][random2];
+  W = random2;
+};
+
+function CreateEnemy(){
+  enemy = document.createElement('H1');
+  var t = document.createTextNode(":[");
+  enemy.appendChild(t);
+  document.body.appendChild(enemy);
+  enemy.style.float = "left";
+  //Set the position
+  var random = Math.round(Math.random() * 4);//Distance from top
+  var random2 = Math.round(Math.random() * 3);//Distance from player
+  random2 = random2 + 1;
+  console.log(random);
+  // console.log(random);
+  console.log(random2);
+
+  enemy.style.margin = EnemyMargins[random][random2];
+  W = random2;
+  // movenemy();
+};
+var marker = 0;
+function AttemptMurder(){
+  marker = pos;
+  if(marker == 6){
+    marker = 5;
+  }
+  marker = marker - 1;
+  // console.log("Enemy pos: "+random);
+  // console.log("player pos: "+marker);
+  if(marker == random){
+    PlayerDead = true;
+    console.log("MUHAHAHAHAHA! I KILLED THEM!");
+    player.style.color = "hsl(0, 100%, 50%)";
+    console.log("Wave speed was: "+ WaveSpeeds[SpeedIndex]);
+  }
+};
+function ResetGame(){
+  console.log("Reseting...");
+  player.style.color = DefaultColor;
+  SpeedIndex = 0;
+  CoolDown = WaveSpeeds[SpeedIndex];
+  if(BestScore < Score){
+    BestScore = Score;
+    document.getElementById("HighScore").innerHTML = "High score: "+BestScore;
+  };
+  PlayerDead = false;
+  Score = 0;
+  document.getElementById("Score").innerHTML = "Last Score: "+Score;
+  Game();
+  console.log("Reset");
+  Score = 0;
+};
+function movenemy(){
+        setTimeout(() => {
+            if(W < 0){
+
+              AttemptMurder();
+              Game();
+              return
+            }
+            // console.log(W);
+            enemy.style.margin = EnemyMargins[random][W];
+            W--;
+            movenemy()
+        }, CoolDown)
+    }
+movenemy();
+//     X.parentNode.removeChild(X);
+// function Game(){
+//   KillEnemy(enemy);
+//   CreateEnemy();
+//   W = random2;
+//   movenemy();
+// };
+var A = 0;
+function Game(){
+  if(PlayerDead == false){
+    if(A < GameWaves){
+      ResetEnemy();
+      CoolDown = WaveSpeeds[SpeedIndex];
+      SpeedIndex = SpeedIndex + 1;
+      Score = Score + 1;
+      document.getElementById("Score").innerHTML = "Last Score: "+Score;
+      movenemy();
+    }
+  }else{
+    return;
+  }
+};
+</script>
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+<body>
+
+<p>This example demonstrates how to assign an "onkeypress" event to an input element.</p>
+
+<p>Press a key inside the text field to set a red background color.</p>
+
+<input type="text" id="demo" onkeypress="myFunction()">
+
+<script>
+function myFunction() {
+  document.getElementById("demo").style.backgroundColor = "red";
+}
+</script>
+
+</body>
+</html> -->

@@ -1,0 +1,41 @@
+.GameName{
+    text-align: center;
+    color: rgb(42, 168, 42);
+    background-color: navy;
+    padding: 0%;
+    margin: 0%;
+}
+.Tutorial{
+    text-align: center;
+    color: rgb(42, 168, 42);
+    padding: 0%;
+    margin: 0%;
+}
+.HighScore{
+    text-align: center;
+    color: rgb(176, 190, 50);
+    background-color: navy;
+    padding: 0%;
+    margin: 0%;
+}
+.Score{
+    text-align: center;
+    color: rgb(42, 168, 42);
+    background-color: navy;
+    padding: 0%;
+    margin: 0%;
+}
+.Reset{
+    width: 100%;
+    text-align: center;
+    color: rgb(255, 236, 175);
+    background-color: rgb(124, 7, 7);
+    padding: 25px;
+    border-radius: 12px;
+}
+.Warning{
+    text-align: center;
+    color: red;
+    padding: 0%;
+    margin: 0%;
+}
